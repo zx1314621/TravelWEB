@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+
+
+xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+
+
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>springmv_mybatis1208</display-name>
+  
+   <!-- 加载spring容器 
+  <param-value>/WEB-INF/classes/spring/applicationContext.xml,/WEB-
+
+
+INF/classes/spring/applicationContext-*.xml</param-value>-->
+  <context-param>
+  <param-name>contextConfigLocation</param-name>
+  <param-value>/WEB-INF/classes/spring/applicationContext-*.xml</param-value>
+  </context-param>
+  <listener>
+  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- springmvc前段控制器 -->
+  <servlet>
+  <servlet-name>springmvc</servlet-name>
+  <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  <!-- contextConfigLocation配置springmvc加载的配置文件（配置处理器映射器、适配器等等） 
+  如果不配置contextConfigLocation默认加载/WEB-INF/servlet名称-servlet.xml（springmvc-
+
+
+servlet.xml）-->
+  <init-param>
+  <param-name>contextConfigLocation</param-name>
+  <param-value>classpath:spring/springmvc.xml</param-value>
+  </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+  <servlet-name>springmvc</servlet-name>
+  <!-- 第一种：*.action，访问.action结尾由DispatcherServlet进行解析
+  第二种：/，所有访问的地址都由DispatcherServlet进行解析，对于静态的文件解析，要配置不让
+
+
+DispatcherServlet进行解析
+  使用此种方法可以实现RESTful风格的url -->
+  <url-pattern>*.action</url-pattern>
+  </servlet-mapping>
+  
+<!--   乱码过滤器 -->
+  <filter>  
+        <filter-name>CharacterEncodingFilter</filter-name>  
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
+        <init-param>  
+            <param-name>encoding</param-name>  
+            <param-value>utf-8</param-value>  
+        </init-param>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>CharacterEncodingFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>
+    
+   <!--  CXF -->
+     <servlet>    
+        <servlet-name>CXFServlet</servlet-name>    
+        <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>    
+        <load-on-startup>2</load-on-startup>    
+    </servlet>    
+    
+    <servlet-mapping>    
+        <servlet-name>CXFServlet</servlet-name>    
+        <url-pattern>/webservice/*</url-pattern>    
+    </servlet-mapping>  
+    
+    
+    
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
