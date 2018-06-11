@@ -14,5 +14,7 @@ public interface AccountMapperCustom {
 	public AccountCustom findAccountById(@Param("account_id")String account_id)throws Exception;
 
 	public void updateAccountById(AccountCustom accountCustom)throws Exception;
+	
+	public void addAccount(AccountCustom accountCustom)throws Exception;
 }
 

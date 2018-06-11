@@ -7,7 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.cxf.transport.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -16,13 +18,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import po.AccountCustom;
+import po.OrderCustom;
+import po.PayAccount;
 import po.TicketCustom;
+import service.AccountService;
+import service.OrderService;
 import service.PaywayService;
 import service.TicketService;
 
 @Controller
 @RequestMapping("/jsp")
 public class LocalController {
+	
+	@Autowired
+	public AccountService accountService;
+	
+	@Autowired
+	public OrderService orderService;
 	
 	ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/applicationContext-service.xml");  
     TicketService client = (TicketService) ctx.getBean("client");  
@@ -161,16 +173,37 @@ public class LocalController {
 	public ModelAndView buyticket(String ticket_id,String number) throws Exception {		
 		TicketCustom ticketCustom = new TicketCustom();
 		String flag = ticket_id.substring(0, 1);
+		OrderCustom orderCustom = new OrderCustom();
+		int random =(int)(1+Math.random()*5000);
+		String company = null;
+		String ran = String.valueOf(random);
+		String order_id = "ali" + ran;
+		orderCustom.setOrder_id(order_id);
+		orderCustom.setTicket_id(ticket_id);
 		if(flag.equals("e")) {
 			ticketCustom = client.findEasternTicketById(ticket_id);
+			company="东方航空";
 		}
 		else if(flag.equals("s")) {
 			ticketCustom = client.findSouthernTicketById(ticket_id);
+			company="南方航空";
 		}
 		else if(flag.equals("c")) {
 			ticketCustom = client.findChinaTicketById(ticket_id);
+			company="中国航空";
 		}
 		int money = Integer.valueOf(number)*ticketCustom.getPrice();
+		
+		orderCustom.setStart(ticketCustom.getStart());
+		orderCustom.setEnd(ticketCustom.getEnd());
+		orderCustom.setPrice(ticketCustom.getPrice());
+		orderCustom.setDay(ticketCustom.getDay());
+		orderCustom.setTime(ticketCustom.getTime());
+		orderCustom.setBuynumber(Integer.valueOf(number));
+		orderCustom.setCompany(company);
+		orderCustom.setMoney(money);
+		orderService.addOrder(orderCustom);
+		
 		
 		ModelAndView modelandview = new ModelAndView();
 		modelandview.addObject("ticketCustom",ticketCustom);
@@ -181,10 +214,10 @@ public class LocalController {
 	}
 	
 	@RequestMapping("/payticket.action")
-	public ModelAndView payticket(String ticket_id,String money,String payway) throws Exception {		
+	public ModelAndView payticket(String ticket_id,String money,String payway,String paywayid) throws Exception {		
 		TicketCustom ticketCustom = new TicketCustom();
 		String flag = ticket_id.substring(0, 1);	
-		
+			
 		//减票
 		if(flag.equals("e")) {
 			ticketCustom = client.findEasternTicketById(ticket_id);
@@ -203,14 +236,113 @@ public class LocalController {
 		}	
 		//付钱
 		if(payway.equals("支付宝")) {
-			paywaySercie.addAlipaybao(ticketCustom, Integer.valueOf(money));
+			PayAccount payAccount = paywaySercie.getAlipayAccount(paywayid);
+			if(payAccount==null)
+			{
+				ModelAndView modelandview = new ModelAndView();
+			    modelandview.setViewName("failed1");
+			    return modelandview;		
+				
+			}
+			
+			if(payAccount.getBalance()>Integer.valueOf(money))
+			{
+				paywaySercie.addAlipaybao(ticketCustom, Integer.valueOf(money));
+				payAccount.setBalance((payAccount.getBalance())-(Integer.valueOf(money)));
+				paywaySercie.updateAlipayAccount(payAccount);
+				
+			}else {
+				ModelAndView modelandview = new ModelAndView();
+				modelandview.setViewName("failed");
+				return modelandview;		
+			}
+			
 		}else {
-			paywaySercie.addWeChatbao(ticketCustom, Integer.valueOf(money));
+			PayAccount payAccount = paywaySercie.getWeChatAccount(paywayid);
+			if(payAccount==null)
+			{
+				ModelAndView modelandview = new ModelAndView();
+			    modelandview.setViewName("failed1");
+			    return modelandview;		
+				
+			}
+			if(payAccount!=null&&payAccount.getBalance()>Integer.valueOf(money))
+			{
+				paywaySercie.addWeChatbao(ticketCustom, Integer.valueOf(money));
+				payAccount.setBalance((payAccount.getBalance())-(Integer.valueOf(money)));
+				paywaySercie.updateWeChatAccount(payAccount);
+				
+			}else {
+				ModelAndView modelandview = new ModelAndView();
+				modelandview.setViewName("failed");
+				return modelandview;		
+			}
+			
 		}
 		ModelAndView modelandview = new ModelAndView();
 		modelandview.addObject("ticketCustom",ticketCustom);
-		modelandview.setViewName("choose");
+		modelandview.setViewName("success");
 		
 		return modelandview;
 	}
+
+	@RequestMapping("/signin.action")
+	public ModelAndView signin(HttpSession session,String account_id, String password) throws Exception
+	{
+		AccountCustom accountCustom = accountService.findAccountById(account_id);
+		if(accountCustom==null)
+		{
+			ModelAndView modelandview = new ModelAndView();
+			modelandview.setViewName("signupfailed");
+			return modelandview;
+		}
+		if(accountCustom.getPassword().equals(password)) {
+			
+			int flag = 1;
+			session.setAttribute("flag", flag); 
+			ModelAndView modelandview = new ModelAndView();
+			modelandview.setViewName("signinsuccess");
+			return modelandview;
+		}else {
+			ModelAndView modelandview = new ModelAndView();
+			modelandview.setViewName("signinfailed");
+			return modelandview;
+		}
+		
+	
+		
+	}
+	
+	@RequestMapping("/signup.action")
+	public ModelAndView signup(HttpSession session,String account_id, String password) throws Exception
+	{
+		AccountCustom accountCustom = new AccountCustom();
+		accountCustom.setAccount_id(account_id);
+		accountCustom.setPassword(password);
+		accountService.addAccount(accountCustom);
+		int flag = 1;
+		session.setAttribute("flag", flag); 
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.setViewName("signupsuccess");
+		return modelandview;
+		
+	}
+	
+	/*@RequestMapping("/checkorder.action")
+	public ModelAndView checkorder(String account_id, String password) throws Exception
+	{
+		AccountCustom accountCustom = new AccountCustom();
+		accountCustom.setAccount_id(account_id);
+		accountCustom.setPassword(password);
+		accountService.addAccount(accountCustom);
+		int flag = 1;
+		session.setAttribute("flag", flag); 
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.setViewName("signupsuccess");
+		return modelandview;
+		
+	}*/
+
+
+
 }

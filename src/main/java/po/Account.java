@@ -3,7 +3,6 @@ package po;
 public class Account {
 	private String account_id;
 	private String password;
-	private int balance;
 	public String getAccount_id() {
 		return account_id;
 	}
@@ -18,12 +17,6 @@ public class Account {
 	}
 	public Account() {
 		super();
-	}
-	public int getBalance() {
-		return balance;
-	}
-	public void setBalance(int balance) {
-		this.balance = balance;
 	}
 	
 

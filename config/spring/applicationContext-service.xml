@@ -61,4 +61,5 @@ xmlns:tx="http://www.springframework.org/schema/tx"
     </bean>
 <!-- 商品管理的service -->
 <bean id="accountService" class="service.impl.AccountServiceImpl" />
+<bean id="orderService" class="service.impl.OrderServiceImpl" />
 </beans>

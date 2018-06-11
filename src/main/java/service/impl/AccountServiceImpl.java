@@ -33,4 +33,10 @@ public class AccountServiceImpl implements AccountService{
 			accountMapperCustom.updateAccountById(accountCustom);
 		}
 	}
+
+	public void addAccount(AccountCustom accountCustom) throws Exception {
+		// TODO Auto-generated method stub
+		accountMapperCustom.addAccount(accountCustom);
+		
+	}
 }

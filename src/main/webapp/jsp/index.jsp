@@ -45,6 +45,28 @@ function func1() {
         content: 'choose.jsp' //iframe的url
     });
 }
+function func2() {
+    //iframe层
+    layer.open({
+        type: 2,
+        title: '登录',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['500px', '400px'],
+        content: 'signin.jsp' //iframe的url
+    });
+}
+function func3() {
+    //iframe层
+    layer.open({
+        type: 2,
+        title: '注册',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['500px', '400px'],
+        content: 'signup.jsp' //iframe的url
+    });
+}
 </script>
 <body>
 	<div class="preloader">
@@ -71,14 +93,21 @@ function func1() {
 				</div> 
 				<div class="collapse navbar-collapse"> 
 					<ul class="nav navbar-nav navbar-right"> 
-						<!-- <li class="scroll active"><a href="#navigation">Home</a></li> 
-						<li class="scroll"><a href="#about-us">About Us</a></li> 
-						<li class="scroll"><a href="#services">Services</a></li> 
+					    <c:choose>
+                      <c:when test ="${flag==1}">
+                      <li class="scroll active"><a href="javascript:func2()">我的订单</a></li> 
+                      </c:when>
+                        <c:otherwise>
+                       <li class="scroll active"><a href="javascript:func2()">登录</a></li> 
+						<li class="scroll"><a href="javascript:func3()">注册</a></li> 
+                       </c:otherwise>
+                      </c:choose>         						
+						<!-- <li class="scroll"><a href="#services">Services</a></li> 
 						<li class="scroll"><a href="#our-team">Our Team</a></li> 
 						<li class="scroll"><a href="#portfolio">Portfolio</a></li> 
 						<li class="scroll"><a href="#clients">Clients</a></li> 
 						<li class="scroll"><a href="#blog">Blog</a></li> 
-						<li class="scroll"><a href="#contact">Contact</a></li>  -->
+						<li class="scroll"><a href="#contact">Contact</a></li> -->
 					</ul> 
 				</div> 
 			</div> 

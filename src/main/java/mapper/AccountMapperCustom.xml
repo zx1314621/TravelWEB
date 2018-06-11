@@ -21,12 +21,12 @@ resultType使用扩展对象
 -->
 <select id="queryAccountList" 
 resultType="po.AccountCustom">
-SELECT account_id,password,balance FROM account
+SELECT account_id,password FROM account
 </select>
 
 <select id="findAccountById" parameterType="String" 
 resultType="po.AccountCustom">
-SELECT account_id,password,balance FROM account where account_id = #{account_id, jdbcType=VARCHAR}
+SELECT account_id,password FROM account where account_id = #{account_id, jdbcType=VARCHAR}
 <!-- <where>
 <include refid="query_account_where"></include>
 </where> -->
@@ -36,10 +36,21 @@ SELECT account_id,password,balance FROM account where account_id = #{account_id,
     UPDATE account SET
     account_id = #{account_id},
     password = #{password},
-    balance = #{balance}
     WHERE
     account_id = #{account_id}
  </update>
+ 
+  <insert id="addAccount" parameterType="po.AccountCustom" useGeneratedKeys="false">
+    INSERT INTO account
+    ( account_id,
+      password
+    )
+    VALUES
+    (
+    #{account_id},
+    #{password}
+    )
+  </insert>
 
 
 </mapper>

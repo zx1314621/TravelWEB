@@ -15,5 +15,7 @@ public interface AccountService {
 	public AccountCustom findAccountById(String account_id)throws Exception;
 	
 	public void updateAccountById(String account_id, AccountCustom accountCustom)throws Exception;
+	
+	public void addAccount(AccountCustom accountCustom)throws Exception;
 
 }

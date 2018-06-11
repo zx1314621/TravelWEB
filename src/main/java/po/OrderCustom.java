@@ -2,6 +2,7 @@ package po;
 
 public class OrderCustom {
 	
+	private String order_id;
 	private String ticket_id;
 	private String start;
 	private String end;
@@ -11,6 +12,12 @@ public class OrderCustom {
 	private int buynumber;
 	private String company;
 	private int money;
+	public String getOrder_id() {
+		return order_id;
+	}
+	public void setOrder_id(String order_id) {
+		this.order_id = order_id;
+	}
 	public String getTicket_id() {
 		return ticket_id;
 	}

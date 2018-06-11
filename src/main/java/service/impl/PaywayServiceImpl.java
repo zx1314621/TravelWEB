@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import mapper.PaywayMapperCustom;
 import po.OrderCustom;
+import po.PayAccount;
 import po.TicketCustom;
 import service.PaywayService;
 
@@ -20,6 +21,10 @@ public class PaywayServiceImpl implements PaywayService{
 	public void addAlipaybao(TicketCustom ticketCustom,int money) throws Exception {
 		// TODO Auto-generated method stub
 		OrderCustom orderCustom = new OrderCustom();
+		int random =(int)(1+Math.random()*5000);
+		String ran = String.valueOf(random);
+		String order_id = "ali" + ran;
+		orderCustom.setOrder_id(order_id);
 		orderCustom.setTicket_id(ticketCustom.getTicket_id());
 		orderCustom.setStart(ticketCustom.getStart());
 		orderCustom.setEnd(ticketCustom.getEnd());
@@ -48,6 +53,10 @@ public class PaywayServiceImpl implements PaywayService{
 	public void addWeChatbao(TicketCustom ticketCustom,int money) throws Exception {
 		// TODO Auto-generated method stub
 		OrderCustom orderCustom = new OrderCustom();
+		int random =(int)(1+Math.random()*5000);
+		String ran = String.valueOf(random);
+		String order_id = "wc" + ran;
+		orderCustom.setOrder_id(order_id);
 		orderCustom.setTicket_id(ticketCustom.getTicket_id());
 		orderCustom.setStart(ticketCustom.getStart());
 		orderCustom.setEnd(ticketCustom.getEnd());
@@ -69,6 +78,30 @@ public class PaywayServiceImpl implements PaywayService{
 		}
 		orderCustom.setMoney(money);
 		paywayMapperCustom.paywechat(orderCustom);
+		
+	}
+
+	public PayAccount getAlipayAccount(String payid) throws Exception {
+		// TODO Auto-generated method stub
+		return paywayMapperCustom.findAliPayAccountById(payid);
+		
+	}
+
+	public PayAccount getWeChatAccount(String payid) throws Exception {
+		// TODO Auto-generated method stub
+		return paywayMapperCustom.findWeChatAccountById(payid);
+		
+	}
+
+	public void updateAlipayAccount(PayAccount payaccount) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.updateAliPayAccount(payaccount);
+		
+	}
+
+	public void updateWeChatAccount(PayAccount payaccount) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.updateWeChatAccount(payaccount);
 		
 	}
 
