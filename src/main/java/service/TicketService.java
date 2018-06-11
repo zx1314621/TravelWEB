@@ -3,6 +3,8 @@ package service;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import po.*;
 
@@ -22,5 +24,22 @@ public interface TicketService {
 	
 	@WebMethod
 	List<TicketCustom> getTicketSouthern() throws Exception;
+	
+	@WebMethod
+	TicketCustom findEasternTicketById(@Param("ticket_id")String ticket_id)throws Exception;
+	
+	@WebMethod
+	TicketCustom findSouthernTicketById(@Param("ticket_id")String ticket_id)throws Exception;
+	
+	@WebMethod
+	TicketCustom findChinaTicketById(@Param("ticket_id")String ticket_id)throws Exception;
+	
+	@WebMethod
+	void buyEasternTicketById(@Param("ticket_id")String ticket_id,@Param("number")int number)throws Exception;
+	@WebMethod
+	void buySouthernTicketById(@Param("ticket_id")String ticket_id,@Param("number")int number)throws Exception;
+	@WebMethod
+	void buyChinaTicketById(@Param("ticket_id")String ticket_id,@Param("number")int number)throws Exception;
+	
 
 }

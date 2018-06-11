@@ -41,7 +41,7 @@ function func1() {
         title: '正在订票',
         shadeClose: true,
         shade: 0.8,
-        area: ['470px', '450px'],
+        area: ['1000px', '750px'],
         content: 'choose.jsp' //iframe的url
     });
 }

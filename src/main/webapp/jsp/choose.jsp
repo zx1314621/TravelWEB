@@ -52,7 +52,7 @@
       </div>
     </div>
     </div>
-     <div class="layui-form-item">
+<div class="layui-form-item">
    <div class="layui-inline">
       <label class="layui-form-label">目的地</label>
       <div class="layui-input-inline">
@@ -64,14 +64,82 @@
         </select>
       </div>
     </div>
-  </div>
+</div>
   <div class="layui-form-item">
     <div class="layui-input-block">
       <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
       <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
   </div>
-</form>        
+</form> 
+
+ <table class="layui-table">
+  <colgroup>
+    <col width="150">
+    <col width="200">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>机票编号</th>
+      <th>出发地</th>
+      <th>目的地</th>
+      <th>出发日期</th>
+      <th>出发时间</th>
+      <th>价格</th>
+      <th>余票数</th>
+      <th>航空公司</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+  <form action =showticket.action method = "post">
+
+<c:forEach var = "easternList" items = "${easternList}">
+
+<tr>
+    <td>${easternList.ticket_id }</td>
+    <td>${easternList.start }</td>
+    <td>${easternList.end }</td>
+    <td>${easternList.day }</td>
+    <td>${easternList.time }:00</td>
+    <td>${easternList.price }</td>
+    <td>${easternList.number }</td>
+    <td>东方航空</td>
+      <td><button class="layui-btn layui-btn-normal layui-btn-mini news_del" id="ticket_id" name="ticket_id"  type="submit"  value="${easternList.ticket_id}"><i class="layui-icon">&#xe615;</i> 购买</button></td>  
+</tr>
+</c:forEach>
+<form class="layui-form" action =HandleOrderManager method = "post">
+<c:forEach var = "southernList" items = "${southernList}">
+
+<tr>
+    <td>${southernList.ticket_id }</td>
+    <td>${southernList.start }</td>
+    <td>${southernList.end }</td>
+    <td>${southernList.day }</td>
+    <td>${southernList.time }:00</td>
+    <td>${southernList.price }</td>
+    <td>${southernList.number }</td>
+    <td>南方航空</td>
+      <td><button class="layui-btn layui-btn-danger layui-btn-mini news_del" id="ticket_id" name="ticket_id"  type="submit"  value="${southernList.ticket_id}"><i class="layui-icon">&#xe615;</i> 购买</button></td>
+</c:forEach>
+<c:forEach var = "chinaList" items = "${chinaList}">
+
+<tr>
+    <td>${chinaList.ticket_id }</td>
+    <td>${chinaList.start }</td>
+    <td>${chinaList.end }</td>
+    <td>${chinaList.day }</td>
+    <td>${chinaList.time }:00</td>
+    <td>${chinaList.price }</td>
+    <td>${chinaList.number }</td>
+    <td>中国航空</td>
+      <td><button class="layui-btn layui-btn-warm" id="ticket_id" name="ticket_id"  type="submit"  value="${chinaList.ticket_id}"><i class="layui-icon">&#xe615;</i> 购买</button></td>  
+</tr>
+</c:forEach>
+</form>
+  </tbody>
+</table>   
 
  
 

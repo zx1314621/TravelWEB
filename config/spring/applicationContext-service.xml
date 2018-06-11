@@ -39,12 +39,26 @@ xmlns:tx="http://www.springframework.org/schema/tx"
 </bean> -->
 
 <!--  <bean id="ticket" class="service.impl.TicketServiceImpl"/>   -->
+
+<!-- 发服务 -->
+<!-- 票 -->
 <jaxws:endpoint id="ticketservice" implementor="service.impl.TicketServiceImpl" address="/ticketservice" />
+<!--  支付 -->
+<jaxws:endpoint id="paywayservice" implementor="service.impl.PaywayServiceImpl" address="/paywayservice" />
+
+<!-- 接受服务 -->
+<!-- 票 -->
 <bean id="client" class="service.TicketService" factory-bean="clientFactory" factory-method="create" />  
     <bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">  
         <property name="serviceClass" value="service.TicketService" />  
         <property name="address" value="http://localhost/DisProject/webservice/ticketservice" />  
     </bean>  
+<!--  支付 -->
+<bean id="payway" class="service.PaywayService" factory-bean="clientFactory1" factory-method="create" />  
+<bean id="clientFactory1" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">  
+        <property name="serviceClass" value="service.PaywayService" />  
+        <property name="address" value="http://localhost/DisProject/webservice/paywayservice" />  
+    </bean>
 <!-- 商品管理的service -->
 <bean id="accountService" class="service.impl.AccountServiceImpl" />
 </beans>

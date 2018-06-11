@@ -7,9 +7,9 @@
 <!-- <sql id="query_ticket_where">
 使用动态sql，通过if判断，满足条件进行sql拼接
 商品的查询条件通过ItemsQueryVo的包装属性传递
-<if test="accountCustom!=null">
-<if test="accountCustom.account_id!=null and account_idCustom.account_id!=''">
-account.account_id = '${accountCustom.account_id}'
+<if test="ticketCustom!=null">
+<if test="ticketCustom.ticket_id!=null and ticketCustom.ticket_id!=''">
+ticket_id = '${ticketCustom.ticket_id}'
 </if>
 </if>
 </sql> -->
@@ -32,22 +32,40 @@ resultType="po.TicketCustom">
 SELECT ticket_id,start,end,price,day,time,number FROM southern_ticket
 </select>
 
-<!-- <select id="findAccountById" parameterType="String" 
-resultType="po.AccountCustom">
-SELECT account_id,password,balance FROM account where account_id = #{account_id, jdbcType=VARCHAR}
-<where>
-<include refid="query_account_where"></include>
-</where>
-</select> -->
 
-<!-- <update id="updateAccountById" parameterType="po.AccountCustom">
-    UPDATE account SET
-    account_id = #{account_id},
-    password = #{password},
-    balance = #{balance}
+
+
+ <select id="findEasternTicketById" parameterType="String" 
+resultType="po.TicketCustom">
+SELECT ticket_id,start,end,price,day,time,number FROM eastern_ticket where ticket_id = #{ticket_id, jdbcType=VARCHAR}
+</select>
+ <select id="findSouthernTicketById" parameterType="String" 
+resultType="po.TicketCustom">
+SELECT ticket_id,start,end,price,day,time,number FROM southern_ticket where ticket_id = #{ticket_id, jdbcType=VARCHAR}
+</select>
+ <select id="findChinaTicketById" parameterType="String" 
+resultType="po.TicketCustom">
+SELECT ticket_id,start,end,price,day,time,number FROM china_ticket where ticket_id = #{ticket_id, jdbcType=VARCHAR}
+</select>
+
+<update id="buyEasternTicketById" parameterType="String">
+    UPDATE eastern_ticket SET
+    number = number-1
     WHERE
-    account_id = #{account_id}
- </update> -->
+    ticket_id = #{ticket_id}
+ </update>
+ <update id="buySouthernTicketById" parameterType="String">
+    UPDATE southern_ticket SET
+    number = number-1
+    WHERE
+    ticket_id = #{ticket_id}
+ </update>
+ <update id="buyChinaTicketById" parameterType="String">
+    UPDATE china_ticket SET
+    number = number-1
+    WHERE
+    ticket_id = #{ticket_id}
+ </update>
 
 
 </mapper>

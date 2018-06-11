@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.PaywayMapperCustom" >
+
+<!-- 定义商品查询的sql片段，就是商品查询条件 -->
+<sql id="query_payway_where">
+使用动态sql，通过if判断，满足条件进行sql拼接
+商品的查询条件通过ItemsQueryVo的包装属性传递
+<if test="accountCustom!=null">
+<if test="accountCustom.account_id!=null and account_idCustom.account_id!=''">
+account.account_id = '${accountCustom.account_id}'
+</if>
+</if>
+</sql>
+
+
+<!-- 商品的列表查询
+parameterType包装了查询条件
+resultType使用扩展对象
+-->
+<!-- <select id="queryAccountList" 
+resultType="po.AccountCustom">
+SELECT account_id,password,balance FROM account
+</select> -->
+
+<!-- <select id="findAccountById" parameterType="String" 
+resultType="po.AccountCustom">
+SELECT account_id,password,balance FROM account where account_id = #{account_id, jdbcType=VARCHAR}
+<where>
+<include refid="query_account_where"></include>
+</where>
+</select> -->
+
+<!-- <update id="payalipay" parameterType="po.OrderCustom">
+    UPDATE alipay SET
+    a_id = #{ticket_id},
+    company = #{company},
+    money = #{money}
+ </update> -->
+ 
+<insert id="payalipay" parameterType="po.OrderCustom">
+    INSERT INTO alipay
+    ( a_id,
+    company,
+    money 
+    )
+    VALUES
+    ( #{ticket_id},
+    #{company},
+    #{money}
+    )
+  </insert>
+  
+  <insert id="paywechat" parameterType="po.OrderCustom">
+    INSERT INTO wechat
+    ( w_id,
+    company,
+    money 
+    )
+    VALUES
+    ( #{ticket_id},
+    #{company},
+    #{money}
+    )
+  </insert>
+
+</mapper>
