@@ -15,10 +15,11 @@
 </head>
 <body>
 
-<form class="layui-form"  id="chooseForm" action="payticket.action" method="post">
+<form class="layui-form"  id="chooseForm" action="confirmEdit.action" method="post">
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
   <legend>机票信息</legend>
 </fieldset>
+<input type="hidden" name="company" id="company" value="${company}">
   <div class="layui-form-item">
    <div class="layui-inline">
       <label class="layui-form-label">机票编号</label>
@@ -31,7 +32,7 @@
    <div class="layui-inline">
       <label class="layui-form-label">出发地</label>
       <div class="layui-input-inline">
-        <input type="text" name="start" lay-verify="required" autocomplete="off" value="${ticketCustom.start }" class="layui-input" readonly>
+        <input type="text" name="start" lay-verify="required" autocomplete="off" value="${ticketCustom.start }" class="layui-input" >
         
       </div>
     </div>
@@ -40,8 +41,17 @@
    <div class="layui-inline">
       <label class="layui-form-label">目的地</label>
       <div class="layui-input-inline">
-        <input type="text" name="end" lay-verify="required" autocomplete="off" value="${ticketCustom.end }" class="layui-input" readonly>
+        <input type="text" name="end" lay-verify="required" autocomplete="off" value="${ticketCustom.end }" class="layui-input" >
         
+      </div>
+    </div>
+  </div>
+  
+  <div class="layui-form-item">
+   <div class="layui-inline">
+      <label class="layui-form-label">价格</label>
+      <div class="layui-input-inline">
+        <input type="text" name="price" lay-verify="required" autocomplete="off" value="${ticketCustom.price}" class="layui-input" >     
       </div>
     </div>
   </div>
@@ -49,7 +59,7 @@
    <div class="layui-inline">
       <label class="layui-form-label">出发日期</label>
       <div class="layui-input-inline">
-        <input type="text" name="day" lay-verify="required" autocomplete="off" value="${ticketCustom.day }" class="layui-input" readonly>
+        <input type="text" class="layui-input" id="day" name="day" value="${ticketCustom.day}">
         
       </div>
     </div>
@@ -58,37 +68,22 @@
    <div class="layui-inline">
       <label class="layui-form-label">起飞时间</label>
       <div class="layui-input-inline">
-        <input type="text" name="time" lay-verify="required" autocomplete="off" value="${ticketCustom.time}:00" class="layui-input" readonly>     
-      </div>
-    </div>
-  </div>     
-<div class="layui-form-item">
-   <div class="layui-inline">
-      <label class="layui-form-label">总价格</label>
-      <div class="layui-input-inline">
-        <input type="text" name="money" lay-verify="required" autocomplete="off" value="${money}" class="layui-input" readonly>     
-      </div>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">支付方式</label>
-    <div class="layui-input-block">
-      <input type="radio" name="payway" value="支付宝" title="支付宝" checked="">
-      <input type="radio" name="payway" value="微信 "  title="微信">
-    </div>
-  </div>
-  <div class="layui-form-item">
-   <div class="layui-inline">
-      <label class="layui-form-label">支付账号</label>
-      <div class="layui-input-inline">
-        <input type="text" name="paywayid" lay-verify="required" autocomplete="off" placeholder="支付账号" class="layui-input" >     
+        <input type="text" name="time" lay-verify="required" autocomplete="off" value="${ticketCustom.time}:00" class="layui-input" >     
       </div>
     </div>
   </div> 
-  
+  <div class="layui-form-item">
+   <div class="layui-inline">
+      <label class="layui-form-label">余量</label>
+      <div class="layui-input-inline">
+        <input type="text" name="number" lay-verify="required" autocomplete="off" value="${ticketCustom.number}" class="layui-input" >     
+      </div>
+    </div>
+  </div>     
+ 
  <div class="layui-form-item">
     <div class="layui-input-block">
-      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即购买</button>
+      <button class="layui-btn" lay-submit="" lay-filter="demo1">确认修改</button>
     </div>
   </div>
 </form> 

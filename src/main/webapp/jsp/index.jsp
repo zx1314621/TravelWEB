@@ -67,6 +67,17 @@ function func3() {
         content: 'signup.jsp' //iframe的url
     });
 }
+function func4() {
+    //iframe层
+    layer.open({
+        type: 2,
+        title: '正在订票',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['1000px', '750px'],
+        content: 'showorder.action' //iframe的url
+    });
+}
 </script>
 <body>
 	<div class="preloader">
@@ -95,7 +106,8 @@ function func3() {
 					<ul class="nav navbar-nav navbar-right"> 
 					    <c:choose>
                       <c:when test ="${flag==1}">
-                      <li class="scroll active"><a href="javascript:func2()">我的订单</a></li> 
+                      <li class="scroll active"><a href="javascript:func4()">我的订单</a></li> 
+                      <li class="scroll"><a href="quit.action">退出登录</a></li> 
                       </c:when>
                         <c:otherwise>
                        <li class="scroll active"><a href="javascript:func2()">登录</a></li> 

@@ -2,6 +2,7 @@ package controller;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 
+import java.rmi.Remote;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.cxf.transport.Session;
+import org.apache.taglibs.standard.tag.common.core.RemoveTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -55,6 +57,7 @@ public class LocalController {
 		int dates1 = Integer.valueOf(dates[0]);
 		int dates2 = Integer.valueOf(dates[1]); 
 		int dates3 = Integer.valueOf(dates[2]);
+		//删除过时机票
 		for(int i=0; i<easternList.size(); i++ )
 		{
 			String day1 = easternList.get(i).getDay();
@@ -62,11 +65,11 @@ public class LocalController {
 			int days1 = Integer.valueOf(days[0]);
 			int days2 = Integer.valueOf(days[1]);
 			int days3 = Integer.valueOf(days[2]);
-			if(dates1>days1) {easternList.remove(i);}
+			if(dates1>days1) {easternList.remove(i); i--;}
 			else {
-				if(dates1==days1&&dates2>days2)easternList.remove(i);
+				if(dates1==days1&&dates2>days2) {easternList.remove(i);i--;}
 				else {
-					if(dates1==days1&&dates2==days2&&dates3>days3)easternList.remove(i);	
+					if(dates1==days1&&dates2==days2&&dates3>days3) {easternList.remove(i);i--;}
 				}
 				
 			}
@@ -78,11 +81,11 @@ public class LocalController {
 			int days1 = Integer.valueOf(days[0]);
 			int days2 = Integer.valueOf(days[1]);
 			int days3 = Integer.valueOf(days[2]);
-			if(dates1>days1) {southernList.remove(i);}
+			if(dates1>days1) {southernList.remove(i);i--;}
 			else {
-				if(dates1==days1&&dates2>days2)southernList.remove(i);
+				if(dates1==days1&&dates2>days2) {southernList.remove(i);i--;}
 				else {
-					if(dates1==days1&&dates2==days2&&dates3>days3)southernList.remove(i);	
+					if(dates1==days1&&dates2==days2&&dates3>days3) {southernList.remove(i);i--;}
 				}
 				
 			}
@@ -94,17 +97,17 @@ public class LocalController {
 			int days1 = Integer.valueOf(days[0]);
 			int days2 = Integer.valueOf(days[1]);
 			int days3 = Integer.valueOf(days[2]);
-			if(dates1>days1) {chinaList.remove(i);}
+			if(dates1>days1) {chinaList.remove(i);i--;}
 			else {
-				if(dates1==days1&&dates2>days2)chinaList.remove(i);
+				if(dates1==days1&&dates2>days2) {chinaList.remove(i);i--;}
 				else {
-					if(dates1==days1&&dates2==days2&&dates3>days3)chinaList.remove(i);	
+					if(dates1==days1&&dates2==days2&&dates3>days3) {chinaList.remove(i);i--;}
 				}
 				
 			}
 		}	
 		
-		
+		//选择机票
 		if(start.equals("出发地")&&end.equals("目的地"));
 		else {
 		for(int i=0; i<easternList.size(); i++ )
@@ -138,6 +141,24 @@ public class LocalController {
 			}
 		}
 		}
+		
+		
+		//删除卖光机票
+		for(int i=0; i<easternList.size(); i++ )
+		{
+			if(easternList.get(i).getNumber()<=0) {easternList.remove(i);i--;}
+		}
+		for(int i=0; i<southernList.size(); i++ ) 
+		{
+			if(southernList.get(i).getNumber()<=0) {southernList.remove(i);i--;}
+		}
+		for(int i=0; i<chinaList.size(); i++ )
+		{
+			if(chinaList.get(i).getNumber()<=0) {chinaList.remove(i);i--;}
+		}
+		
+		
+		
 		ModelAndView modelandview = new ModelAndView();
 		modelandview.addObject("easternList",easternList);
 		modelandview.addObject("southernList",southernList);
@@ -170,9 +191,47 @@ public class LocalController {
 	}
 
 	@RequestMapping("/buyticket.action")
-	public ModelAndView buyticket(String ticket_id,String number) throws Exception {		
+	public ModelAndView buyticket(HttpSession session,String ticket_id,String number) throws Exception {		
 		TicketCustom ticketCustom = new TicketCustom();
 		String flag = ticket_id.substring(0, 1);
+		
+		if(flag.equals("e")) {
+			ticketCustom = client.findEasternTicketById(ticket_id);
+			
+		}
+		else if(flag.equals("s")) {
+			ticketCustom = client.findSouthernTicketById(ticket_id);
+			
+		}
+		else if(flag.equals("c")) {
+			ticketCustom = client.findChinaTicketById(ticket_id);
+			
+		}
+		int money = Integer.valueOf(number)*ticketCustom.getPrice();				
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.addObject("ticketCustom",ticketCustom);
+		modelandview.addObject("money",money);
+		modelandview.setViewName("pay");
+		String account_id = (String) session.getAttribute("account_id");
+		if(account_id==null) {
+			ModelAndView modelandview1 = new ModelAndView();
+			modelandview1.addObject("ticketCustom",ticketCustom);
+			modelandview1.addObject("money",money);
+			String flag1 = "1";
+			modelandview1.addObject("flag1",flag1);
+			modelandview1.setViewName("ticketdetail");
+			
+			return modelandview1;
+			
+		}
+		return modelandview;
+	}
+	
+	@RequestMapping("/payticket.action")
+	public ModelAndView payticket(HttpSession session,String ticket_id,String money,String payway,String paywayid) throws Exception {		
+		
+		TicketCustom ticketCustom = new TicketCustom();
+		String flag = ticket_id.substring(0, 1);	
 		OrderCustom orderCustom = new OrderCustom();
 		int random =(int)(1+Math.random()*5000);
 		String company = null;
@@ -180,19 +239,29 @@ public class LocalController {
 		String order_id = "ali" + ran;
 		orderCustom.setOrder_id(order_id);
 		orderCustom.setTicket_id(ticket_id);
+		//减票
 		if(flag.equals("e")) {
-			ticketCustom = client.findEasternTicketById(ticket_id);
 			company="东方航空";
+			ticketCustom = client.findEasternTicketById(ticket_id);
+			int number = Integer.valueOf(money)/(ticketCustom.getPrice());
+			client.buyEasternTicketById(ticket_id, number);
 		}
 		else if(flag.equals("s")) {
-			ticketCustom = client.findSouthernTicketById(ticket_id);
 			company="南方航空";
+			ticketCustom = client.findSouthernTicketById(ticket_id);
+			int number = Integer.valueOf(money)/(ticketCustom.getPrice());
+			client.buySouthernTicketById(ticket_id, number);
 		}
 		else if(flag.equals("c")) {
-			ticketCustom = client.findChinaTicketById(ticket_id);
 			company="中国航空";
+			ticketCustom = client.findChinaTicketById(ticket_id);
+			int number = Integer.valueOf(money)/(ticketCustom.getPrice());
+			client.buyChinaTicketById(ticket_id, number);
 		}
-		int money = Integer.valueOf(number)*ticketCustom.getPrice();
+		
+		
+		int number = Integer.valueOf(money)/(ticketCustom.getPrice());
+        int money1 = Integer.valueOf(money);
 		
 		orderCustom.setStart(ticketCustom.getStart());
 		orderCustom.setEnd(ticketCustom.getEnd());
@@ -201,39 +270,10 @@ public class LocalController {
 		orderCustom.setTime(ticketCustom.getTime());
 		orderCustom.setBuynumber(Integer.valueOf(number));
 		orderCustom.setCompany(company);
-		orderCustom.setMoney(money);
+		orderCustom.setMoney(money1); 
+		String account_id = (String) session.getAttribute("account_id");
+		orderCustom.setAccount_id(account_id);
 		orderService.addOrder(orderCustom);
-		
-		
-		ModelAndView modelandview = new ModelAndView();
-		modelandview.addObject("ticketCustom",ticketCustom);
-		modelandview.addObject("money",money);
-		modelandview.setViewName("pay");
-		
-		return modelandview;
-	}
-	
-	@RequestMapping("/payticket.action")
-	public ModelAndView payticket(String ticket_id,String money,String payway,String paywayid) throws Exception {		
-		TicketCustom ticketCustom = new TicketCustom();
-		String flag = ticket_id.substring(0, 1);	
-			
-		//减票
-		if(flag.equals("e")) {
-			ticketCustom = client.findEasternTicketById(ticket_id);
-			int number = Integer.valueOf(money)/(ticketCustom.getPrice());
-			client.buyEasternTicketById(ticket_id, number);
-		}
-		else if(flag.equals("s")) {
-			ticketCustom = client.findSouthernTicketById(ticket_id);
-			int number = Integer.valueOf(money)/(ticketCustom.getPrice());
-			client.buySouthernTicketById(ticket_id, number);
-		}
-		else if(flag.equals("c")) {
-			ticketCustom = client.findChinaTicketById(ticket_id);
-			int number = Integer.valueOf(money)/(ticketCustom.getPrice());
-			client.buyChinaTicketById(ticket_id, number);
-		}	
 		//付钱
 		if(payway.equals("支付宝")) {
 			PayAccount payAccount = paywaySercie.getAlipayAccount(paywayid);
@@ -300,6 +340,7 @@ public class LocalController {
 			
 			int flag = 1;
 			session.setAttribute("flag", flag); 
+			session.setAttribute("account_id",accountCustom.getAccount_id());
 			ModelAndView modelandview = new ModelAndView();
 			modelandview.setViewName("signinsuccess");
 			return modelandview;
@@ -320,28 +361,49 @@ public class LocalController {
 		accountCustom.setAccount_id(account_id);
 		accountCustom.setPassword(password);
 		accountService.addAccount(accountCustom);
-		int flag = 1;
-		session.setAttribute("flag", flag); 
+		
+		session.setAttribute("account_id",accountCustom.getAccount_id());
+		session.setAttribute("flag", 1); 
 		ModelAndView modelandview = new ModelAndView();
 		modelandview.setViewName("signupsuccess");
 		return modelandview;
 		
 	}
 	
-	/*@RequestMapping("/checkorder.action")
-	public ModelAndView checkorder(String account_id, String password) throws Exception
+	@RequestMapping("/showorder.action")
+	public ModelAndView showorder(HttpSession session, String password) throws Exception
 	{
-		AccountCustom accountCustom = new AccountCustom();
-		accountCustom.setAccount_id(account_id);
-		accountCustom.setPassword(password);
-		accountService.addAccount(accountCustom);
-		int flag = 1;
-		session.setAttribute("flag", flag); 
-		ModelAndView modelandview = new ModelAndView();
-		modelandview.setViewName("signupsuccess");
-		return modelandview;
+		String account_id = (String) session.getAttribute("account_id");
+		List<OrderCustom> orderCustomList = orderService.getOrderByid(account_id);
 		
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.addObject("orderCustomList",orderCustomList);	
+		modelandview.setViewName("showorder");
+		return modelandview;
+	}
+	
+	
+	@RequestMapping("/deleteorder.action")
+	public ModelAndView orderdetail(String order_id) throws Exception
+	{
+		orderService.deleteOrderByid(order_id);
+		
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.setViewName("deletesuccess");
+		return modelandview;
+	}
+	
+/*@RequestMapping("/quit.action")
+	public ModelAndView quit(HttpSession session) throws Exception
+	{
+		session.setAttribute("account_id",null);
+		session.setAttribute("flag", 0); 
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.setViewName("index");
+		return modelandview;
 	}*/
+	
+
 
 
 

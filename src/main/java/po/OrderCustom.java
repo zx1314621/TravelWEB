@@ -12,6 +12,13 @@ public class OrderCustom {
 	private int buynumber;
 	private String company;
 	private int money;
+	private String account_id;
+	public String getAccount_id() {
+		return account_id;
+	}
+	public void setAccount_id(String account_id) {
+		this.account_id = account_id;
+	}
 	public String getOrder_id() {
 		return order_id;
 	}

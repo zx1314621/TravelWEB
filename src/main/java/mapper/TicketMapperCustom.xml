@@ -67,5 +67,38 @@ SELECT ticket_id,start,end,price,day,time,number FROM china_ticket where ticket_
     ticket_id = #{ticket_id}
  </update>
 
+<update id="updateEasternTicketById" parameterType="po.TicketCustom">
+    UPDATE eastern_ticket SET
+    start = #{start},
+    end = #{end},
+    price = #{price},
+    day = #{day},
+    time = #{time},
+    number = #{number}
+    WHERE
+    ticket_id = #{ticket_id}
+ </update>
+ <update id="updateSouthernTicketById" parameterType="po.TicketCustom">
+    UPDATE southern_ticket SET
+    start = #{start},
+    end = #{end},
+    price = #{price},
+    day = #{day},
+    time = #{time},
+    number = #{number}
+    WHERE
+    ticket_id = #{ticket_id}
+ </update>
+ <update id="updateChinaTicketById" parameterType="po.TicketCustom">
+    UPDATE china_ticket SET
+    start = #{start},
+    end = #{end},
+    price = #{price},
+    day = #{day},
+    time = #{time},
+    number = #{number}
+    WHERE
+    ticket_id = #{ticket_id}
+ </update>
 
 </mapper>

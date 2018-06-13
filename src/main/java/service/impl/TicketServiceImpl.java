@@ -72,6 +72,22 @@ public class TicketServiceImpl implements TicketService{
 			ticketMapperCustom.buyChinaTicketById(ticket_id);	
 		}
 	}
+
+	public void updateEasternTicketById(TicketCustom ticketCustom) throws Exception {
+		// TODO Auto-generated method stub
+		ticketMapperCustom.updateEasternTicketById(ticketCustom);
+		
+	}
+
+	public void updateSouthernTicketById(TicketCustom ticketCustom) throws Exception {
+		// TODO Auto-generated method stub
+		ticketMapperCustom.updateSouthernTicketById(ticketCustom);
+	}
+
+	public void updateChinaTicketById(TicketCustom ticketCustom) throws Exception {
+		// TODO Auto-generated method stub
+		ticketMapperCustom.updateChinaTicketById(ticketCustom);
+	}
 	
 
 }

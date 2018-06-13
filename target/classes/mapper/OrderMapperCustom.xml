@@ -9,12 +9,24 @@
 parameterType包装了查询条件
 resultType使用扩展对象
 -->
-<!-- <select id="queryAccountList" 
-resultType="po.AccountCustom">
-SELECT account_id,password FROM account
+<select id="getOrderByid" parameterType="String"
+resultType="po.OrderCustom">
+SELECT order_id,
+      ticket_id,
+      start,
+      end,
+      price,
+      day,
+      time,
+      buynumber,
+      company,
+      money,
+      account_id FROM `disproject`.`order` 
+      WHERE
+      account_id = #{account_id, jdbcType=VARCHAR}
 </select>
 
-<select id="findAccountById" parameterType="String" 
+<!-- <select id="findAccountById" parameterType="String" 
 resultType="po.AccountCustom">
 SELECT account_id,password FROM account where account_id = #{account_id, jdbcType=VARCHAR}
 <where>
@@ -31,7 +43,7 @@ SELECT account_id,password FROM account where account_id = #{account_id, jdbcTyp
  </update> -->
  
   <insert id="addOrder" parameterType="po.OrderCustom" useGeneratedKeys="false">
-    INSERT INTO order
+    INSERT INTO `disproject`.`order`
     ( order_id,
       ticket_id,
       start,
@@ -41,7 +53,8 @@ SELECT account_id,password FROM account where account_id = #{account_id, jdbcTyp
       time,
       buynumber,
       company,
-      money
+      money,
+      account_id
     )
     VALUES
     (
@@ -54,9 +67,13 @@ SELECT account_id,password FROM account where account_id = #{account_id, jdbcTyp
      #{time},
      #{buynumber},
      #{company},
-     #{money}
+     #{money},
+     #{account_id}
     )
   </insert>
-
+  
+<delete id="deleteOrderByid" parameterType="String">
+    DELETE FROM `disproject`.`order` WHERE order_id = #{order_id}
+</delete>
 
 </mapper>

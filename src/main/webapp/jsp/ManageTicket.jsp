@@ -13,7 +13,7 @@
   <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<script>
+ <script>
 
 layui.use(['form', 'layedit', 'laydate'], function(){
 	  var form = layui.form
@@ -23,84 +23,111 @@ layui.use(['form', 'layedit', 'laydate'], function(){
 });	  
 
 function func4() {
-	layer.alert('请先登录!', {
-        icon: 2,
-        skin: 'layer-ext-moon' 
+    //iframe层
+    layer.open({
+        type: 2,
+        title: '正在订票',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['800px', '600px'],
+        content: 'editTicket.jsp' //iframe的url
     });
 }
-</script>
-<form class="layui-form"  id="chooseForm" action="buyticket.action" method="post">
+</script>           
+
+
+<form class="layui-form"  id="chooseForm" action="searchTicket.action" method="post">
+ 
+
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-  <legend>机票信息</legend>
+  <legend>东方航空</legend>
 </fieldset>
+<input type="hidden" name="company" id="company" value="东方航空">
   <div class="layui-form-item">
-   <div class="layui-inline">
+    <div class="layui-inline">
       <label class="layui-form-label">机票编号</label>
       <div class="layui-input-inline">
-        <input type="text" name="ticket_id" lay-verify="required" autocomplete="off" value="${ticketCustom.ticket_id}" class="layui-input" readonly>
+        <input type="text" class="layui-input" id="ticket_id" name="ticket_id" placeholder="请输入机票编号">
       </div>
     </div>
-  </div>
-  <div class="layui-form-item">
-   <div class="layui-inline">
+   
+    <div class="layui-inline">
       <label class="layui-form-label">出发地</label>
       <div class="layui-input-inline">
-        <input type="text" name="start" lay-verify="required" autocomplete="off" value="${ticketCustom.start }" class="layui-input" readonly>
-        
+       <select id="start" name="start"  lay-search="">
+          <option value="">出发地</option>
+          <option value="上海">上海</option>
+          <option value="重庆">重庆</option>
+          <option value="西安">西安</option>
+        </select>
       </div>
     </div>
-  </div>
-    <div class="layui-form-item">
    <div class="layui-inline">
       <label class="layui-form-label">目的地</label>
       <div class="layui-input-inline">
-        <input type="text" name="end" lay-verify="required" autocomplete="off" value="${ticketCustom.end }" class="layui-input" readonly>
-        
-      </div>
-    </div>
-  </div>
-   <div class="layui-form-item">
-   <div class="layui-inline">
-      <label class="layui-form-label">出发日期</label>
-      <div class="layui-input-inline">
-        <input type="text" name="day" lay-verify="required" autocomplete="off" value="${ticketCustom.day }" class="layui-input" readonly>
-        
-      </div>
-    </div>
-  </div>
-   <div class="layui-form-item">
-   <div class="layui-inline">
-      <label class="layui-form-label">起飞时间</label>
-      <div class="layui-input-inline">
-        <input type="text" name="time" lay-verify="required" autocomplete="off" value="${ticketCustom.time}:00" class="layui-input" readonly>     
-      </div>
-    </div>
-  </div>     
-<div class="layui-form-item">
-    <div class="layui-inline">
-      <label class="layui-form-label">数量</label>
-      <div class="layui-input-inline">
-       <select id="number" name="number"  lay-verify="required" lay-search="" >
-          <option >1</option>
-          <option >2</option>
-          <option >3</option>
-          <option >4</option>
+       <select id="end" name="end"  lay-search="">
+          <option value="">目的地</option>
+          <option value="上海">上海</option>
+          <option value="重庆">重庆</option>
+          <option value="西安">西安</option>
         </select>
       </div>
     </div>
 </div>
-  
- <div class="layui-form-item">
+  <div class="layui-form-item">
     <div class="layui-input-block">
       <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
   </div>
 </form> 
-  
 
+ <table class="layui-table">
+  <colgroup>
+    <col width="150">
+    <col width="200">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>机票编号</th>
+      <th>出发地</th>
+      <th>目的地</th>
+      <th>出发日期</th>
+      <th>出发时间</th>
+      <th>价格</th>
+      <th>余票数</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+ <form action =editTicket.action method = "post">
+<input type="hidden" name="company" id="company" value="东方航空">
+<c:forEach var = "easternList" items = "${easternList}">
+
+<tr>
+    <td>${easternList.ticket_id }</td>
+    <td>${easternList.start }</td>
+    <td>${easternList.end }</td>
+    <td>${easternList.day }</td>
+    <td>${easternList.time }:00</td>
+    <td>${easternList.price }</td>
+    <td>${easternList.number }</td>
+      <td><button class="layui-btn layui-btn-normal layui-btn-mini news_del" id="ticket_id" name="ticket_id"  type="submit"  value="${easternList.ticket_id}"><i class="layui-icon">&#xe615;</i>编辑</button>
+      <button class="layui-btn layui-btn-danger layui-btn-mini news_del" name="delete"  type="submit"  value="${s.getRoom_id()}"><i class="layui-icon">&#xe640;</i> 删除</button> </td>  </td>  
+</tr>
+</c:forEach>
+</form>
+  </tbody>
+</table>   
 
  
 
+          
+
+
+
+          
 <script src="layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
