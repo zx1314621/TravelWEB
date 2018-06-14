@@ -88,6 +88,22 @@ public class TicketServiceImpl implements TicketService{
 		// TODO Auto-generated method stub
 		ticketMapperCustom.updateChinaTicketById(ticketCustom);
 	}
+
+	
+	public void deleteEasternTicket(String ticket_id) throws Exception {
+		// TODO Auto-generated method stub
+		ticketMapperCustom.deleteEasternTicket(ticket_id);
+	}
+
+	public void deleteSouthernTicket(String ticket_id) throws Exception {
+		// TODO Auto-generated method stub
+		ticketMapperCustom.deleteSouthernTicket(ticket_id);
+	}
+
+	public void deleteChinaTicket(String ticket_id) throws Exception {
+		// TODO Auto-generated method stub
+		ticketMapperCustom.deleteChinaTicket(ticket_id);
+	}
 	
 
 }

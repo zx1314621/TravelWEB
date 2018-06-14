@@ -48,5 +48,12 @@ public interface TicketService {
 	@WebMethod
 	void updateChinaTicketById(@Param("ticketCustom")TicketCustom ticketCustom)throws Exception;
 	
+	@WebMethod
+	void deleteEasternTicket(@Param("ticket_id")String ticket_id)throws Exception;
+	@WebMethod
+	void deleteSouthernTicket(@Param("ticket_id")String ticket_id)throws Exception;
+	@WebMethod
+	void deleteChinaTicket(@Param("ticket_id")String ticket_id)throws Exception;
+	
 
 }

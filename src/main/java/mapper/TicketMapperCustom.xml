@@ -68,7 +68,7 @@ SELECT ticket_id,start,end,price,day,time,number FROM china_ticket where ticket_
  </update>
 
 <update id="updateEasternTicketById" parameterType="po.TicketCustom">
-    UPDATE eastern_ticket SET
+    UPDATE `disproject`.`eastern_ticket` SET
     start = #{start},
     end = #{end},
     price = #{price},
@@ -79,7 +79,7 @@ SELECT ticket_id,start,end,price,day,time,number FROM china_ticket where ticket_
     ticket_id = #{ticket_id}
  </update>
  <update id="updateSouthernTicketById" parameterType="po.TicketCustom">
-    UPDATE southern_ticket SET
+    UPDATE `disproject`.`southern_ticket` SET
     start = #{start},
     end = #{end},
     price = #{price},
@@ -90,7 +90,7 @@ SELECT ticket_id,start,end,price,day,time,number FROM china_ticket where ticket_
     ticket_id = #{ticket_id}
  </update>
  <update id="updateChinaTicketById" parameterType="po.TicketCustom">
-    UPDATE china_ticket SET
+    UPDATE `disproject`.`china_ticket` SET
     start = #{start},
     end = #{end},
     price = #{price},
@@ -100,5 +100,15 @@ SELECT ticket_id,start,end,price,day,time,number FROM china_ticket where ticket_
     WHERE
     ticket_id = #{ticket_id}
  </update>
+
+<delete id="deleteEasternTicket" parameterType="String">
+    DELETE * FROM `disproject`.`eastern_ticket` WHERE ticket_id = #{ticket_id}
+</delete>
+<delete id="deleteSouthernTicket" parameterType="String">
+    DELETE * FROM `disproject`.`southern_ticket` WHERE ticket_id = #{ticket_id}
+</delete>
+<delete id="deleteChinaTicket" parameterType="String">
+    DELETE * FROM `disproject`.`china_ticket` WHERE ticket_id = #{ticket_id}
+</delete>
 
 </mapper>

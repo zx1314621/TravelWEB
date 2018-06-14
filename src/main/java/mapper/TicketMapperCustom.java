@@ -24,7 +24,13 @@ public interface TicketMapperCustom {
 	public void buyChinaTicketById(@Param("ticket_id")String ticket_id)throws Exception;
 	
 	//更新数据库的票
-	public void updateEasternTicketById(@Param("ticketCustom")TicketCustom ticketCustom)throws Exception;
-	public void updateSouthernTicketById(@Param("ticketCustom")TicketCustom ticketCustom)throws Exception;
-	public void updateChinaTicketById(@Param("ticketCustom")TicketCustom ticketCustom)throws Exception;
+	public void updateEasternTicketById(TicketCustom ticketCustom)throws Exception;
+	public void updateSouthernTicketById(TicketCustom ticketCustom)throws Exception;
+	public void updateChinaTicketById(TicketCustom ticketCustom)throws Exception;
+	
+	//删除票
+	public void deleteEasternTicket(@Param("ticket_id")String ticket_id)throws Exception;
+	public void deleteSouthernTicket(@Param("ticket_id")String ticket_id)throws Exception;
+	public void deleteChinaTicket(@Param("ticket_id")String ticket_id)throws Exception;
+	
 }

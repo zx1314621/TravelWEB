@@ -71,7 +71,29 @@
       <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
   </div>
+
 </form> 
+
+<form class="layui-form"  id="chooseForm" action="sequence.action" method="post">
+<c:choose>
+ <c:when test ="${sequence==1}">
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn layui-btn-primary" type="submit" value="">价格由低到高</button>
+    </div>
+  </div>
+  </c:when>
+  <c:otherwise>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn layui-btn-primary" type="submit" value="">价格由高到低</button>
+    </div>
+  </div>
+  </c:otherwise>
+
+
+</c:choose>  
+</form>
 
  <table class="layui-table">
   <colgroup>
@@ -95,46 +117,18 @@
   <tbody>
   <form action =showticket.action method = "post">
 
-<c:forEach var = "easternList" items = "${easternList}">
+<c:forEach var = "ticketList" items = "${ticketList}">
 
 <tr>
-    <td>${easternList.ticket_id }</td>
-    <td>${easternList.start }</td>
-    <td>${easternList.end }</td>
-    <td>${easternList.day }</td>
-    <td>${easternList.time }:00</td>
-    <td>${easternList.price }</td>
-    <td>${easternList.number }</td>
-    <td>东方航空</td>
-      <td><button class="layui-btn layui-btn-normal layui-btn-mini news_del" id="ticket_id" name="ticket_id"  type="submit"  value="${easternList.ticket_id}"><i class="layui-icon">&#xe615;</i> 购买</button></td>  
-</tr>
-</c:forEach>
-<form class="layui-form" action =HandleOrderManager method = "post">
-<c:forEach var = "southernList" items = "${southernList}">
-
-<tr>
-    <td>${southernList.ticket_id }</td>
-    <td>${southernList.start }</td>
-    <td>${southernList.end }</td>
-    <td>${southernList.day }</td>
-    <td>${southernList.time }:00</td>
-    <td>${southernList.price }</td>
-    <td>${southernList.number }</td>
-    <td>南方航空</td>
-      <td><button class="layui-btn layui-btn-danger layui-btn-mini news_del" id="ticket_id" name="ticket_id"  type="submit"  value="${southernList.ticket_id}"><i class="layui-icon">&#xe615;</i> 购买</button></td>
-</c:forEach>
-<c:forEach var = "chinaList" items = "${chinaList}">
-
-<tr>
-    <td>${chinaList.ticket_id }</td>
-    <td>${chinaList.start }</td>
-    <td>${chinaList.end }</td>
-    <td>${chinaList.day }</td>
-    <td>${chinaList.time }:00</td>
-    <td>${chinaList.price }</td>
-    <td>${chinaList.number }</td>
-    <td>中国航空</td>
-      <td><button class="layui-btn layui-btn-warm" id="ticket_id" name="ticket_id"  type="submit"  value="${chinaList.ticket_id}"><i class="layui-icon">&#xe615;</i> 购买</button></td>  
+    <td>${ticketList.ticket_id }</td>
+    <td>${ticketList.start }</td>
+    <td>${ticketList.end }</td>
+    <td>${ticketList.day }</td>
+    <td>${ticketList.time }:00</td>
+    <td>${ticketList.price }</td>
+    <td>${ticketList.number }</td>
+    <td>${ticketList.company }</td>
+      <td><button class="layui-btn layui-btn-normal layui-btn-mini news_del" id="ticket_id" name="ticket_id"  type="submit"  value="${ticketList.ticket_id}"><i class="layui-icon">&#xe615;</i> 购买</button></td>  
 </tr>
 </c:forEach>
 </form>

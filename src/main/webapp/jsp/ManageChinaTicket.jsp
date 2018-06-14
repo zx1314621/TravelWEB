@@ -114,7 +114,10 @@ function func4() {
     <td>${easternList.price }</td>
     <td>${easternList.number }</td>
       <td><button class="layui-btn layui-btn-normal layui-btn-mini news_del" id="ticket_id" name="ticket_id"  type="submit"  value="${easternList.ticket_id}"><i class="layui-icon">&#xe615;</i>编辑</button>
-      <button class="layui-btn layui-btn-danger layui-btn-mini news_del" name="delete"  type="submit"  value="${s.getRoom_id()}"><i class="layui-icon">&#xe640;</i> 删除</button> </td>  </td>  
+       <form action =deleteTicket.action method = "post">
+       <input type="hidden" name="company" id="company" value="中国航空">
+      <button class="layui-btn layui-btn-danger layui-btn-mini news_del" name="delete"  type="submit"  value="${easternList.ticket_id}"><i class="layui-icon">&#xe640;</i> 删除</button> 
+      </form></td>  </td>  
 </tr>
 </c:forEach>
 </form>

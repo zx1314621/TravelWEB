@@ -116,17 +116,22 @@ public class TicketController {
 	public ModelAndView editTicket(HttpSession session,String ticket_id,String company) throws Exception {
 		TicketCustom ticketCustom = null;
 		ModelAndView modelandview = new ModelAndView();
+		List<TicketCustom> easternList = null; 
 		if(company.equals("东方航空"))
 		{ticketCustom = ticketService.findEasternTicketById(ticket_id); 
+		easternList = ticketService.getTicketEastern();
 		 modelandview.setViewName("ManageTicket");}
 		else if(company.equals("南方航空")) {
 		 ticketCustom = ticketService.findSouthernTicketById(ticket_id);
+		 easternList = ticketService.getTicketSouthern();
 		 modelandview.setViewName("ManageSouthernTicket");
 		}else if(company.equals("中国航空")) {
 		 ticketCustom = ticketService.findChinaTicketById(ticket_id);
+		 easternList = ticketService.getTicketChina();
 		 modelandview.setViewName("ManageChinaTicket");
 		}
 		modelandview.addObject("flag1","1");
+		modelandview.addObject("easternList",easternList);
 		session.setAttribute("ticketCustom", ticketCustom);
 		session.setAttribute("company", company);
 		
@@ -147,7 +152,7 @@ public class TicketController {
 		String[] times = time.split(":");
 		int time1 = Integer.valueOf(times[0]);
 		ticketCustom.setTime(time1);
-		ticketCustom.setEnd(number);
+		ticketCustom.setNumber(Integer.valueOf(number));
 		if(company.equals("东方航空"))
 		{ ticketService.updateEasternTicketById(ticketCustom);}
 		else if(company.equals("南方航空")) {
@@ -157,6 +162,23 @@ public class TicketController {
 		}
 		ModelAndView modelandview = new ModelAndView();
 		modelandview.setViewName("editsuccess");
+		return modelandview;
+		
+	}
+	
+
+	@RequestMapping("/deleteTicket.action")
+	public ModelAndView deleteTicket(String ticket_id,String company) throws Exception {
+		
+		if(company.equals("东方航空"))
+		{ ticketService.deleteEasternTicket(ticket_id);}
+		else if(company.equals("南方航空")) {
+		ticketService.deleteSouthernTicket(ticket_id);
+		}else if(company.equals("中国航空")) {
+		ticketService.deleteChinaTicket(ticket_id);
+		}
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.setViewName("deletesuccess");
 		return modelandview;
 		
 	}

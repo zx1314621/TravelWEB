@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 
 import java.rmi.Remote;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class LocalController {
     PaywayService paywaySercie = (PaywayService) ctx.getBean("payway");
 	
 	@RequestMapping("/queryTicket.action")
-	public ModelAndView queryTicket(HttpServletRequest request,String day,String start,String end) throws Exception {
+	public ModelAndView queryTicket(HttpSession session,String day,String start,String end) throws Exception {
 		
 		List<TicketCustom> easternList = client.getTicketEastern();
 		List<TicketCustom> southernList = client.getTicketSouthern();
@@ -157,17 +158,68 @@ public class LocalController {
 			if(chinaList.get(i).getNumber()<=0) {chinaList.remove(i);i--;}
 		}
 		
+		List<TicketCustom> ticketList = new ArrayList<TicketCustom>();
+		for(int i=0;i<easternList.size();i++) {
+			easternList.get(i).setCompany("东方航空");
+			ticketList.add(easternList.get(i));
+		}
+		for(int i=0;i<southernList.size();i++) {
+			southernList.get(i).setCompany("南方航空");
+			ticketList.add(southernList.get(i));
+		}
+		for(int i=0;i<chinaList.size();i++) {
+			chinaList.get(i).setCompany("中国航空");
+			ticketList.add(chinaList.get(i));
+		}
 		
 		
+		//排序
+		for(int i =0;i < ticketList.size() - 1;i++)  
+        {  
+            for(int j = 0;j <  ticketList.size() - 1-i;j++)// j开始等于0，  
+            {  
+                if(ticketList.get(j).getPrice() > ticketList.get(j+1).getPrice())  
+                {  
+                    int temp = ticketList.get(j).getPrice(); 
+                    int temp1 = ticketList.get(j+1).getPrice();
+                    ticketList.get(j+1).setPrice(temp);
+                    ticketList.get(j).setPrice(temp1);
+                }  
+            }  
+        }
+		int sequence = 1;
 		ModelAndView modelandview = new ModelAndView();
-		modelandview.addObject("easternList",easternList);
-		modelandview.addObject("southernList",southernList);
-		modelandview.addObject("chinaList",chinaList);
-		
+		/*modelandview.addObject("ticketList",ticketList);*/
+		session.setAttribute("sequence", sequence);
+		session.setAttribute("ticketList", ticketList);
 		modelandview.setViewName("choose");
 		
 		return modelandview;
 	}
+	
+	@RequestMapping("/sequence.action")
+	public ModelAndView sequence(HttpSession session) throws Exception {		
+		
+		List<TicketCustom> ticketList = (List<TicketCustom>) session.getAttribute("ticketList");
+		int sequence = (Integer) session.getAttribute("sequence");
+		if(sequence==1) {
+			sequence = 0;
+		}
+		else {
+			sequence = 1;
+		}
+		List<TicketCustom> ticketList1 = new ArrayList<TicketCustom>();
+		for(int i = ticketList.size()-1;i>=0;i--) {
+			ticketList1.add(ticketList.get(i));
+		}
+		ModelAndView modelandview = new ModelAndView();
+		session.setAttribute("ticketList", ticketList1);
+		modelandview.addObject("sequence",sequence);
+		modelandview.setViewName("choose");
+		
+		return modelandview;
+	}
+	
 	
 	@RequestMapping("/showticket.action")
 	public ModelAndView showticket(String ticket_id) throws Exception {		
