@@ -328,7 +328,7 @@ public class LocalController {
 		orderService.addOrder(orderCustom);
 		//付钱
 		if(payway.equals("支付宝")) {
-			PayAccount payAccount = paywaySercie.getAlipayAccount(paywayid);
+			PayAccount payAccount = paywaySercie.getAlipayAccountById(paywayid);
 			if(payAccount==null)
 			{
 				ModelAndView modelandview = new ModelAndView();
@@ -350,7 +350,7 @@ public class LocalController {
 			}
 			
 		}else {
-			PayAccount payAccount = paywaySercie.getWeChatAccount(paywayid);
+			PayAccount payAccount = paywaySercie.getWeChatAccountById(paywayid);
 			if(payAccount==null)
 			{
 				ModelAndView modelandview = new ModelAndView();

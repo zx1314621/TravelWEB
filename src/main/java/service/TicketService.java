@@ -55,5 +55,12 @@ public interface TicketService {
 	@WebMethod
 	void deleteChinaTicket(@Param("ticket_id")String ticket_id)throws Exception;
 	
+	//增加数据库的票
+	@WebMethod
+	void addEasternTicketById(@Param("ticketCustom")TicketCustom ticketCustom)throws Exception;
+	@WebMethod
+	void addSouthernTicketById(@Param("ticketCustom")TicketCustom ticketCustom)throws Exception;
+	@WebMethod
+	void addChinaTicketById(@Param("ticketCustom")TicketCustom ticketCustom)throws Exception;
 
 }

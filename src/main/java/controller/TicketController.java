@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.xml.resolver.apps.resolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -113,8 +114,11 @@ public class TicketController {
 	}
 
 	@RequestMapping("/editTicket.action")
-	public ModelAndView editTicket(HttpSession session,String ticket_id,String company) throws Exception {
-		TicketCustom ticketCustom = null;
+	public ModelAndView editTicket(HttpSession session,String add,String ticket_id,String delete,String company) throws Exception {
+		
+		
+		if(ticket_id!=null)
+		{TicketCustom ticketCustom = null;
 		ModelAndView modelandview = new ModelAndView();
 		List<TicketCustom> easternList = null; 
 		if(company.equals("东方航空"))
@@ -136,6 +140,50 @@ public class TicketController {
 		session.setAttribute("company", company);
 		
 		return modelandview;
+		}
+		else if(delete!=null) {
+			List<TicketCustom> easternList = null; 
+			ModelAndView modelandview = new ModelAndView();
+			if(company.equals("东方航空")) {
+				ticketService.deleteEasternTicket(delete);
+				modelandview.setViewName("ManageTicket");
+				easternList = ticketService.getTicketEastern();
+			}else if(company.equals("南方航空")) {
+				ticketService.deleteSouthernTicket(delete);
+				modelandview.setViewName("ManageSouthernTicket");
+				easternList = ticketService.getTicketSouthern();
+			}else if(company.equals("中国航空")) {
+				ticketService.deleteChinaTicket(delete);
+				modelandview.setViewName("ManageChinaTicket");
+				easternList = ticketService.getTicketChina();
+			}
+			
+			modelandview.addObject("flag2","1");
+			modelandview.addObject("easternList",easternList);
+			return modelandview;
+			
+		}
+		else if(add!=null){
+			ModelAndView modelandview = new ModelAndView();
+			List<TicketCustom> easternList = null; 
+			if(company.equals("东方航空"))
+			{
+			easternList = ticketService.getTicketEastern();
+			 modelandview.setViewName("ManageTicket");}
+			else if(company.equals("南方航空")) {
+			 easternList = ticketService.getTicketSouthern();
+			 modelandview.setViewName("ManageSouthernTicket");
+			}else if(company.equals("中国航空")) {
+			 easternList = ticketService.getTicketChina();
+			 modelandview.setViewName("ManageChinaTicket");
+			}
+			modelandview.addObject("flag3","1");
+			modelandview.addObject("easternList",easternList);
+			session.setAttribute("company", company);
+			
+			return modelandview;
+		}
+		return null;
 		
 	}
 	
@@ -179,6 +227,33 @@ public class TicketController {
 		}
 		ModelAndView modelandview = new ModelAndView();
 		modelandview.setViewName("deletesuccess");
+		return modelandview;
+		
+	}
+	
+	
+	@RequestMapping("/confirmAdd.action")
+	public ModelAndView confirmAdd(String ticket_id,String company,String start,String end,String price,String day
+			,String time,String number) throws Exception {
+		TicketCustom ticketCustom = new TicketCustom();
+		ticketCustom.setTicket_id(ticket_id);
+		ticketCustom.setStart(start);
+		ticketCustom.setEnd(end);
+		ticketCustom.setPrice(Integer.valueOf(price));
+		ticketCustom.setDay(day);
+		ticketCustom.setTime(Integer.valueOf(time));
+		ticketCustom.setNumber(Integer.valueOf(number));
+		if(company.equals("东方航空"))
+		{ 
+			ticketService.addEasternTicketById(ticketCustom);
+		}
+		else if(company.equals("南方航空")) {
+		  ticketService.addSouthernTicketById(ticketCustom);
+		}else if(company.equals("中国航空")) {
+		  ticketService.addChinaTicketById(ticketCustom);
+		}
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.setViewName("editsuccess");
 		return modelandview;
 		
 	}

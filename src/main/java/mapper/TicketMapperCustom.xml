@@ -102,13 +102,80 @@ SELECT ticket_id,start,end,price,day,time,number FROM china_ticket where ticket_
  </update>
 
 <delete id="deleteEasternTicket" parameterType="String">
-    DELETE * FROM `disproject`.`eastern_ticket` WHERE ticket_id = #{ticket_id}
+    DELETE FROM eastern_ticket WHERE ticket_id = #{ticket_id}
 </delete>
 <delete id="deleteSouthernTicket" parameterType="String">
-    DELETE * FROM `disproject`.`southern_ticket` WHERE ticket_id = #{ticket_id}
+    DELETE FROM southern_ticket WHERE ticket_id = #{ticket_id}
 </delete>
 <delete id="deleteChinaTicket" parameterType="String">
-    DELETE * FROM `disproject`.`china_ticket` WHERE ticket_id = #{ticket_id}
+    DELETE FROM china_ticket WHERE ticket_id = #{ticket_id}
 </delete>
+
+<insert id="addEasternTicketById" parameterType="po.TicketCustom" useGeneratedKeys="false">
+    INSERT INTO eastern_ticket
+    ( 
+    ticket_id,
+    start,
+    end,
+    price,
+    day,
+    time,
+    number
+    )
+    VALUES
+    ( 
+    #{ticket_id},
+    #{start},
+    #{end},
+    #{price},
+    #{day},
+    #{time},
+    #{number}
+    )
+</insert>
+<insert id="addSouthernTicketById" parameterType="po.TicketCustom" useGeneratedKeys="false">
+    INSERT INTO southern_ticket
+    ( 
+    ticket_id,
+    start,
+    end,
+    price,
+    day,
+    time,
+    number
+    )
+    VALUES
+    ( 
+    #{ticket_id},
+    #{start},
+    #{end},
+    #{price},
+    #{day},
+    #{time},
+    #{number}
+    )
+</insert>
+<insert id="addChinaTicketById" parameterType="po.TicketCustom" useGeneratedKeys="false">
+    INSERT INTO china_ticket
+    ( 
+    ticket_id,
+    start,
+    end,
+    price,
+    day,
+    time,
+    number
+    )
+    VALUES
+    ( 
+    #{ticket_id},
+    #{start},
+    #{end},
+    #{price},
+    #{day},
+    #{time},
+    #{number}
+    )
+</insert>
 
 </mapper>

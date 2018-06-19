@@ -1,14 +1,18 @@
 package service.impl;
 
+import java.util.List;
+
 import javax.jws.WebService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mapper.PaywayMapperCustom;
+import po.AliOrder;
 import po.OrderCustom;
 import po.PayAccount;
 import po.TicketCustom;
+import po.WechatOrder;
 import service.PaywayService;
 
 @WebService(endpointInterface="service.PaywayService",serviceName="PaywayService")
@@ -81,13 +85,13 @@ public class PaywayServiceImpl implements PaywayService{
 		
 	}
 
-	public PayAccount getAlipayAccount(String payid) throws Exception {
+	public PayAccount getAlipayAccountById(String payid) throws Exception {
 		// TODO Auto-generated method stub
 		return paywayMapperCustom.findAliPayAccountById(payid);
 		
 	}
 
-	public PayAccount getWeChatAccount(String payid) throws Exception {
+	public PayAccount getWeChatAccountById(String payid) throws Exception {
 		// TODO Auto-generated method stub
 		return paywayMapperCustom.findWeChatAccountById(payid);
 		
@@ -103,6 +107,87 @@ public class PaywayServiceImpl implements PaywayService{
 		// TODO Auto-generated method stub
 		paywayMapperCustom.updateWeChatAccount(payaccount);
 		
+	}
+
+	public List<AliOrder> getAliPayOrder() throws Exception {
+		// TODO Auto-generated method stub
+		return paywayMapperCustom.getAliPay();
+	}
+
+	public List<WechatOrder> getWeChatOrder() throws Exception {
+		// TODO Auto-generated method stub
+		return paywayMapperCustom.getWeChat();
+	}
+
+	public List<PayAccount> getAliPayAccount() throws Exception {
+		// TODO Auto-generated method stub
+		return paywayMapperCustom.getAliPayAccount();
+	}
+
+	public List<PayAccount> getWeChatAccount() throws Exception {
+		// TODO Auto-generated method stub
+		return paywayMapperCustom.getWeChatAccount();
+	}
+
+	public void deleteWechatOrder(String w_id) throws Exception {
+		
+		paywayMapperCustom.deleteWechatOrder(w_id);
+		
+	}
+
+	public void deleteAlipayOrder(String a_id) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.deleteAlipayOrder(a_id);
+	}
+
+	public void deleteWechatAccount(String payid) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.deleteWechatAccount(payid);
+	}
+
+	public void deleteAlipayAccount(String payid) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.deleteAlipayAccount(payid);
+	}
+
+	public AliOrder findAliPayOrderById(String a_id) throws Exception {
+		// TODO Auto-generated method stub
+		return paywayMapperCustom.findAliPayOrderById(a_id);
+	}
+
+	public WechatOrder findWeChatOrderById(String w_id) throws Exception {
+		// TODO Auto-generated method stub
+		return paywayMapperCustom.findWeChatOrderById(w_id);
+	}
+
+	public void updateAliPayOrder(AliOrder aliOrder) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.updateAliPayOrder(aliOrder);
+	}
+
+	public void updateWeChatOrder(WechatOrder wechatOrder) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.updateWeChatOrder(wechatOrder);
+	}
+
+	public void addAliOrder(AliOrder aliOrder) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.addAliOrder(aliOrder);
+	}
+
+	public void addWechatOrder(WechatOrder wechatOrder) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.addWechatOrder(wechatOrder);
+	}
+
+	public void addAliAccount(PayAccount payAccount) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.addAliAccount(payAccount);
+	}
+
+	public void addWechatAccount(PayAccount payAccount) throws Exception {
+		// TODO Auto-generated method stub
+		paywayMapperCustom.addWechatAccount(payAccount);
 	}
 
 }

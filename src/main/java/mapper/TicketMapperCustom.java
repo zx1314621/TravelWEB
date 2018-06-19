@@ -33,4 +33,11 @@ public interface TicketMapperCustom {
 	public void deleteSouthernTicket(@Param("ticket_id")String ticket_id)throws Exception;
 	public void deleteChinaTicket(@Param("ticket_id")String ticket_id)throws Exception;
 	
+	//增加数据库的票
+	public void addEasternTicketById(TicketCustom ticketCustom)throws Exception;
+	public void addSouthernTicketById(TicketCustom ticketCustom)throws Exception;
+	public void addChinaTicketById(TicketCustom ticketCustom)throws Exception;
+	
+	
+	
 }

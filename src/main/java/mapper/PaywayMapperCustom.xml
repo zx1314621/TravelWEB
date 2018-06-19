@@ -32,16 +32,62 @@ resultType="po.PayAccount">
 SELECT payid,balance FROM wechat_account where payid = #{payid, jdbcType=VARCHAR}
 </select>
 
+<select id="findAliPayOrderById" parameterType="String" 
+resultType="po.AliOrder">
+SELECT a_id,fly_id,company,money FROM alipay where a_id = #{a_id, jdbcType=VARCHAR}
+</select>
+<select id="findWeChatOrderById" parameterType="String" 
+resultType="po.WechatOrder">
+SELECT a_id,fly_id,company,money FROM wechat where w_id = #{w_id, jdbcType=VARCHAR}
+</select>
+
+<select id="getAliPay"
+resultType="po.AliOrder">
+SELECT a_id,fly_id,company,money FROM alipay
+</select>
+<select id="getWeChat"  
+resultType="po.WechatOrder">
+SELECT w_id,fly_id,company,money FROM wechat 
+</select>
+
+<select id="getAliPayAccount"
+resultType="po.PayAccount">
+SELECT payid,balance FROM alipay_account
+</select>
+<select id="getWeChatAccount"  
+resultType="po.PayAccount">
+SELECT payid,balance FROM wechat_account 
+</select>
+
 <update id="updateAliPayAccount" parameterType="po.PayAccount">
     UPDATE alipay_account SET
-    payid = #{payid},
     balance = #{balance}
+    WHERE
+    payid = #{payid}
  </update>
  <update id="updateWeChatAccount" parameterType="po.PayAccount">
-    UPDATE wechat_account SET
-    payid = #{payid},
+    UPDATE wechat_account SET 
     balance = #{balance}
+    
+    payid = #{payid}
  </update>
+ <update id="updateAliPayOrder" parameterType="po.AliOrder">
+    UPDATE alipay SET
+    fly_id = #{fly_id},
+    company = #{company},
+    money = #{money}
+    WHERE
+    a_id = #{a_id}
+ </update>
+  <update id="updateWeChatOrder" parameterType="po.WechatOrder">
+    UPDATE wechat SET
+    fly_id = #{fly_id},
+    company = #{company},
+    money = #{money}
+    WHERE
+    w_id = #{w_id}
+ </update>
+ 
  
  
  
@@ -74,5 +120,75 @@ SELECT payid,balance FROM wechat_account where payid = #{payid, jdbcType=VARCHAR
     #{money}
     )
   </insert>
+<delete id="deleteWechatOrder" parameterType="String">
+    DELETE FROM wechat WHERE w_id = #{w_id}
+</delete>
+<delete id="deleteAlipayOrder" parameterType="String">
+    DELETE FROM alipay WHERE a_id = #{a_id}
+</delete>
+<delete id="deleteWechatAccount" parameterType="String">
+    DELETE FROM wechat_account WHERE payid = #{payid}
+</delete>
+<delete id="deleteAlipayAccount" parameterType="String">
+    DELETE FROM alipay_account WHERE payid = #{payid}
+</delete>
 
+<insert id="addAliOrder" parameterType="po.AliOrder" useGeneratedKeys="false">
+    INSERT INTO alipay
+    ( 
+    a_id,
+    fly_id,
+    company,
+    money
+    )
+    VALUES
+    ( 
+    #{a_id},
+    #{fly_id},
+    #{company},
+    #{money}
+    )
+</insert>
+
+<insert id="addWechatOrder" parameterType="po.WechatOrder" useGeneratedKeys="false">
+    INSERT INTO wechat
+    ( 
+    w_id,
+    fly_id,
+    company,
+    money
+    )
+    VALUES
+    ( 
+    #{a_id},
+    #{fly_id},
+    #{company},
+    #{money}
+    )
+</insert>
+
+<insert id="addAliAccount" parameterType="po.PayAccount" useGeneratedKeys="false">
+    INSERT INTO alipay_account
+    ( 
+    payid,
+    balance
+    )
+    VALUES
+    ( 
+    #{payid},
+    #{balance}
+    )
+</insert>
+<insert id="addWechatAccount" parameterType="po.PayAccount" useGeneratedKeys="false">
+    INSERT INTO wechat_account
+    ( 
+    payid,
+    balance
+    )
+    VALUES
+    ( 
+    #{payid},
+    #{balance}
+    )
+</insert>
 </mapper>

@@ -104,6 +104,22 @@ public class TicketServiceImpl implements TicketService{
 		// TODO Auto-generated method stub
 		ticketMapperCustom.deleteChinaTicket(ticket_id);
 	}
+
+	public void addEasternTicketById(TicketCustom ticketCustom) throws Exception {
+		// TODO Auto-generated method stub
+		ticketMapperCustom.addEasternTicketById(ticketCustom);
+		
+	}
+
+	public void addSouthernTicketById(TicketCustom ticketCustom) throws Exception {
+		// TODO Auto-generated method stub
+		ticketMapperCustom.addSouthernTicketById(ticketCustom);
+	}
+
+	public void addChinaTicketById(TicketCustom ticketCustom) throws Exception {
+		// TODO Auto-generated method stub
+		ticketMapperCustom.addChinaTicketById(ticketCustom);
+	}
 	
 
 }

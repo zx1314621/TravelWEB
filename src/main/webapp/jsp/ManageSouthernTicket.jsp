@@ -26,11 +26,17 @@ function func4() {
     //iframe层
     layer.open({
         type: 2,
-        title: '正在订票',
+        title: '',
         shadeClose: true,
         shade: 0.8,
         area: ['800px', '600px'],
         content: 'editTicket.jsp' //iframe的url
+    });
+}
+function func5() {
+	layer.alert('删除成功!', {
+        icon: 1,
+        skin: 'layer-ext-moon' 
     });
 }
 </script>           
@@ -113,21 +119,15 @@ function func4() {
     <td>${easternList.time }:00</td>
     <td>${easternList.price }</td>
     <td>${easternList.number }</td>
-      <td><button class="layui-btn layui-btn-normal layui-btn-mini news_del" id="ticket_id" name="ticket_id"  type="submit"  value="${easternList.ticket_id}"><i class="layui-icon">&#xe615;</i>编辑</button>
-      <button class="layui-btn layui-btn-danger layui-btn-mini news_del" name="delete"    value="${easternList.ticket_id}"><i class="layui-icon">&#xe640;</i> 删除</button> </td>  </td>  
+      <td>   <button class="layui-btn layui-btn-warm" name="add"  type="submit"  value="${easternList.ticket_id}"><i class="layui-icon">&#xe654;</i> 添加</button> 
+      <button class="layui-btn layui-btn-normal layui-btn-mini news_del" id="ticket_id" name="ticket_id"  type="submit"  value="${easternList.ticket_id}"><i class="layui-icon">&#xe615;</i>编辑</button>
+      <button class="layui-btn layui-btn-danger layui-btn-mini news_del" name="delete"    value="${easternList.ticket_id}"><i class="layui-icon">&#xe640;</i> 删除</button> </td>  
 </tr>
 </c:forEach>
 </form>
   </tbody>
 </table>   
-
- 
-
-          
-
-
-
-          
+        
 <script src="layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
@@ -152,6 +152,18 @@ if(flag1!=null&&flag1.length()>0&&flag1.equals("1"))
  </script>
 <%  
 session.setAttribute("flag1",null);
+	}
+%>
+<% String flag2 = (String)request.getAttribute("flag2");
+if(flag2!=null&&flag2.length()>0&&flag2.equals("1"))
+	
+	{%>
+ <script type="text/javascript">
+                window.onload=function(){
+                	func5(); }
+ </script>
+<%  
+session.setAttribute("flag2",null);
 	}
 %>
 <script>
