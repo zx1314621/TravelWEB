@@ -68,7 +68,7 @@ SELECT payid,balance FROM wechat_account
  <update id="updateWeChatAccount" parameterType="po.PayAccount">
     UPDATE wechat_account SET 
     balance = #{balance}
-    
+    WHERE
     payid = #{payid}
  </update>
  <update id="updateAliPayOrder" parameterType="po.AliOrder">
